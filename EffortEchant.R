@@ -24,6 +24,7 @@ Zone="C:/Users/Cimcä/Desktop/Chiro/Fichiers SIG/Geofla_dept_fr/geoflar-departeme
 #Zone="C:/Users/Cimcä/Desktop/chiro/Fichiers SIG/Départements/departements-20180101.shp"  # Pb en WGS84
 
 arg="C:/Users/Cimcä/Desktop/Chiro/Fichiers_obtenus/CoordWGS84_Pédestre"
+Protocole="Pédestre"
 Eff_Ech=fread(paste0(arg,".csv"))
 
 ################################################
@@ -151,7 +152,7 @@ Scale=c(0,0.99,0.999,1,c(2:10),seq(11,19,2),seq(20,50,5),seq(51,100,10),101,max(
 Nb=subset(GrilleNbParticipations$x,GrilleNbParticipations$x>0)
 summary(Nb)
 
-png("C:/Users/Cimcä/Desktop/Chiro/Fichiers_obtenus/CartEffortEchantillonagePF.png")
+png(paste0("C:/Users/Cimcä/Desktop/Chiro/Fichiers_obtenus/CarteEffortEchantillonage",Protocole,".png"))
 p=spplot(VL,"x",col="transparent", col.regions=get_col_regions(),at=Scale)
 print(p)
 dev.off()

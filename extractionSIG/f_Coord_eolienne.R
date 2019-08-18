@@ -43,7 +43,7 @@ Coord_eol=function(points,names_coord,bs,bm,bl,layer1,layer2)
   R12=shapefile(layer12)
   R13=shapefile(layer13)
   Sys.time()
-  plot(R1)
+  plot(R8)
   testH=match(CoordH,names(OccSL))
   OccSL=subset(OccSL,!is.na(as.data.frame(OccSL)[,testH[1]]))
   OccSL=subset(OccSL,!is.na(as.data.frame(OccSL)[,testH[2]]))
@@ -90,10 +90,12 @@ Coord_eol=function(points,names_coord,bs,bm,bl,layer1,layer2)
   Eol=rbind(data.frame(R1)[,c("coords.x1","coords.x2")],data.frame(R2)[,c("coords.x1","coords.x2")],data.frame(R3)[,c("coords.x1","coords.x2")],data.frame(R4)[,c("coords.x1","coords.x2")],data.frame(R5)[,c("coords.x1","coords.x2")]
             ,data.frame(R6)[,c("coords.x1","coords.x2")],data.frame(R7)[,c("coords.x1","coords.x2")],data.frame(R8)[,c("coords.x1","coords.x2")],data.frame(R9)[,c("coords.x1","coords.x2")],data.frame(R10)[,c("coords.x1","coords.x2")]
             ,data.frame(R11)[,c("coords.x1","coords.x2")],data.frame(R12)[,c("coords.x1","coords.x2")],data.frame(R13)[,c("coords.x1","coords.x2")])
-  
+  Eol=data.frame(Eol,x1=rep(1,length(Eol$coords.x1)))
   coordinates(Eol) <- c("coords.x1","coords.x2")
   proj4string(Eol) <- CRS("+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs")
   
+  plot(Eol)
+  plot(BufferS)
   ##########################################
   ##########################################
   #############  Buffer #  #################
@@ -107,7 +109,7 @@ Coord_eol=function(points,names_coord,bs,bm,bl,layer1,layer2)
   BufferS=gBuffer(OccSL_L93,width=BufferSmall,byid=T)
   SpEollistS=list()
   Sys.time()
- 
+  
   SpEollistS=intersect(Eol,BufferS) # 0.05 sec / pol
    
 
@@ -116,7 +118,7 @@ Coord_eol=function(points,names_coord,bs,bm,bl,layer1,layer2)
   Sys.time()
   hLengthB=gLength(SpEol,byid=T)
   Sys.time()
-  PC_50=aggregate(LengthB,by=list(SpEol$x),FUN=sum)
+  PC_50=aggregate(hLengthB,by=list(SpEol$x),FUN=sum)
   names(PC_50)[ncol(PC_50)]="SpRo_S"
   OccSL_L93Re=merge(OccSL_L93,PC_50,by.x="id",by.y="Group.1",all.x=T)
   OccSL_L93Re$SpRo_S[is.na(OccSL_L93Re$SpRo_S)]=0
@@ -203,7 +205,7 @@ if(Test)
   Coord_eol(
     #points="./vigiechiro/GIS/PA_Thymus nitens" #table giving coordinates in WGS84
     #points ="C:/Users/Adeline/Desktop/chiro/Fichiers_obtenus/CoordWGS84_SpNuit2_Seuil90_DataLP_PF_exportTot" #table giving coordinates in WGS84 
-    points ="C:/Users/Cimcä/Desktop/Chiro/Fichiers_obtenus/SysGrid__75_100"
+    points ="C:/Users/Cimcä/Desktop/Chiro/Fichiers_obtenus/SysGrid__Toute_5500"
     ,names_coord=c("Group.1","Group.2") #vector of two values giving 
     ,bs=50
     ,bm=500
